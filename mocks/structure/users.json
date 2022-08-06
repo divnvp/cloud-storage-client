@@ -1,0 +1,24 @@
+[
+  {
+    "userId": 0,
+    "username": "",
+    "password": "",
+    "firstName": "",
+    "lastName": "",
+    "folders": [
+      {
+        "id": 0,
+        "name": "",
+        "size": 0,
+        "files": [
+          {
+            "id": 0,
+            "name": "",
+            "size": 0,
+            "shelfLife": null
+          }
+        ]
+      }
+    ]
+  }
+]
