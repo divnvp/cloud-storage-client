@@ -50,11 +50,14 @@
 </template>
 
 <script defer>
+import { auth } from "../../mocks/auth.mock";
+
 export default {
   name: "UIAuth",
 
   props: {
-    show: { type: Boolean, required: true }
+    show: { type: Boolean, required: true },
+    users: { type: Array, required: true }
   },
 
   data: () => ({
@@ -70,8 +73,13 @@ export default {
     formRules: [v => !!v || "Это обязательное пое"],
   }),
 
-  async mounted() {
-    // await logout(); TODO
+  computed: {
+    isUserExists() {
+      return this.users.find(u =>
+        u.username === this.user.username &&
+          u.password === this.user.password
+      );
+    }
   },
 
   methods: {
@@ -81,9 +89,11 @@ export default {
       if (!(this.user.username && this.user.password)) return;
 
       try {
-        // TODO
-        if (this.user.username == "admin" && this.user.password == "admin") {
+        if (Object.keys(this.isUserExists).length) {
+          await auth(this.user);
           this.$emit("close");
+        } else {
+          throw Error;
         }
       } catch (e) {
         this.error = true;

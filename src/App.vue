@@ -11,24 +11,35 @@
     </v-app-bar>
 
     <v-main>
-      <UIMain />
+      <UINavigation />
+      <UIMain :users="users" />
     </v-main>
 
-    <UIAuth :show="isAuth" @close="closeAuth" @registration="isRegistration = true" />
+    <UIAuth
+      :show="isAuth"
+      :users="users"
+      @close="closeAuth"
+      @registration="isRegistration = true"
+    />
     <UIRegistration :show="isRegistration" @close="closeRegistration" />
   </v-app>
 </template>
 
 <script>
+// Components
 import UIMain from './components/UIMain';
 import UILogout from "./components/UILogout.vue";
 import UIAuth from "./components/UIAuth";
 import UIRegistration from "./components/UIRegistration";
+import UINavigation from "./components/UINavigation";
+
+import { fetchUsers } from "../mocks/users.mock";
 
 export default {
   name: 'App',
 
   components: {
+    UINavigation,
     UIRegistration,
     UIAuth,
     UILogout,
@@ -37,10 +48,24 @@ export default {
 
   data: () => ({
     isRegistration: false,
-    isAuth: true
+    isAuth: true,
+
+    users: []
   }),
 
+  mounted() {
+    this.getUsers();
+  },
+
   methods: {
+    async getUsers() {
+      try {
+        this.users = await fetchUsers();
+      } catch (e) {
+        //
+      }
+    },
+
     closeRegistration() {
       this.isRegistration = false;
       this.isAuth = true;
