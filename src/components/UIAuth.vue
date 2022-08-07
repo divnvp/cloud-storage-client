@@ -33,7 +33,13 @@
 
             <v-spacer />
 
-            <v-btn text color="primary" type="submit" :disabled="!valid">
+            <v-btn
+              text
+              color="primary"
+              type="submit"
+              :disabled="!valid"
+              @click="showRegistration"
+            >
               Регистрация
             </v-btn>
           </v-row>
@@ -47,8 +53,11 @@
 export default {
   name: "UIAuth",
 
+  props: {
+    show: { type: Boolean, required: true }
+  },
+
   data: () => ({
-    show: true,
     loading: false,
     valid: false,
     error: false,
@@ -69,16 +78,23 @@ export default {
     async auth() {
       this.loading = true;
       this.error = false;
-      if (!(this.user.username && this.password)) return;
+      if (!(this.user.username && this.user.password)) return;
 
       try {
         // TODO
-        this.show = false;
+        if (this.user.username == "admin" && this.user.password == "admin") {
+          this.$emit("close");
+        }
       } catch (e) {
         this.error = true;
       } finally {
         this.loading = false;
       }
+    },
+
+    showRegistration() {
+      this.$emit("close");
+      this.$emit("registration");
     }
   }
 }
