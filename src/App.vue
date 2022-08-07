@@ -99,6 +99,7 @@ export default {
       this.users[index] = user;
 
       localStorage.setItem("users", JSON.stringify(this.users));
+      localStorage.setItem("currentUser", JSON.stringify(this.users[index]));
     },
 
     logout() {

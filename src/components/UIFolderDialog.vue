@@ -28,7 +28,7 @@
         <v-btn
           text
           color="error"
-          @click="show = false"
+          @click="close"
         >
           Отмена
         </v-btn>
@@ -63,6 +63,11 @@ export default {
   methods: {
     createFolder() {
       this.$emit("create", this.folderName);
+      this.close();
+    },
+
+    close() {
+      this.show = false;
     }
   }
 }
