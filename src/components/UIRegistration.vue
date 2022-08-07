@@ -3,11 +3,6 @@
     <v-card :loading="loading">
       <v-card-title>
         Регистрация
-        <v-spacer />
-
-        <v-btn text style="font-size: 18px" color="primary" @click="close">
-          x
-        </v-btn>
       </v-card-title>
 
       <UIAlert
@@ -56,10 +51,19 @@
           <v-row fluid>
             <v-btn
               text
+              color="error"
+              @click="close"
+            >
+              Отмена
+            </v-btn>
+
+            <v-spacer />
+
+            <v-btn
+              text
               color="primary"
               type="submit"
               :disabled="!valid"
-              block
               large
             >
               Регистрация

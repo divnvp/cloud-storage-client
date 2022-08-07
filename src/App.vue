@@ -11,7 +11,11 @@
     </v-app-bar>
 
     <v-main>
-      <UINavigation />
+      <UINavigation
+        v-if="currentUser"
+        :user="currentUser"
+        @create="createFolder"
+      />
       <UIMain :users="users" />
     </v-main>
 
@@ -56,6 +60,7 @@ export default {
     isAuth: !JSON.parse(localStorage.getItem("currentUser")),
 
     users: [],
+    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null
   }),
 
   computed: {
@@ -87,6 +92,13 @@ export default {
       this.users.push(newUser);
       localStorage.setItem("users", JSON.stringify(this.users));
       localStorage.removeItem("currentUser");
+    },
+
+    createFolder(user) {
+      const index = this.users.findIndex(u => u.userId === user.userId);
+      this.users[index] = user;
+
+      localStorage.setItem("users", JSON.stringify(this.users));
     },
 
     logout() {

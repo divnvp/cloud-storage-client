@@ -96,7 +96,10 @@ export default {
       try {
         if (this.isUserExists) {
           await auth(this.user);
-          this.$emit("close", this.user);
+          this.$emit("close", this.users.find(u =>
+            u.username === this.user.username &&
+            u.password === this.user.password
+          ));
         } else {
           throw Error;
         }
