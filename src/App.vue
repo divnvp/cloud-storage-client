@@ -10,13 +10,14 @@
       <UILogout @logout="logout" />
     </v-app-bar>
 
+    <UINavigation
+      :user="currentUser"
+      @create="createFolder"
+      @select="selectFolder"
+    />
+
     <v-main>
-      <UINavigation
-        v-if="currentUser"
-        :user="currentUser"
-        @create="createFolder"
-      />
-      <UIMain :users="users" />
+      <UIFolder v-if="selectedFolder" :folder="selectedFolder" />
     </v-main>
 
     <UIAuth
@@ -36,11 +37,11 @@
 
 <script>
 // Components
-import UIMain from './components/UIMain';
 import UILogout from "./components/UILogout.vue";
 import UIAuth from "./components/UIAuth";
 import UIRegistration from "./components/UIRegistration";
 import UINavigation from "./components/UINavigation";
+import UIFolder from "./components/UIFolder";
 
 import { fetchUsers } from "../mocks/users.mock";
 
@@ -48,11 +49,11 @@ export default {
   name: 'App',
 
   components: {
+    UIFolder,
     UINavigation,
     UIRegistration,
     UIAuth,
     UILogout,
-    UIMain,
   },
 
   data: () => ({
@@ -60,7 +61,8 @@ export default {
     isAuth: !JSON.parse(localStorage.getItem("currentUser")),
 
     users: [],
-    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null
+    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
+    selectedFolder: null
   }),
 
   computed: {
@@ -100,6 +102,10 @@ export default {
 
       localStorage.setItem("users", JSON.stringify(this.users));
       localStorage.setItem("currentUser", JSON.stringify(this.users[index]));
+    },
+
+    selectFolder(folder) {
+      this.selectedFolder = folder;
     },
 
     logout() {

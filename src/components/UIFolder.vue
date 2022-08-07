@@ -1,6 +1,6 @@
 <template>
   <UIPage>
-
+    {{folder || "net"}}
   </UIPage>
 </template>
 
@@ -8,6 +8,9 @@
 import UIPage from "./UIPage";
 export default {
   name: "UIFolder",
-  components: { UIPage }
+  components: { UIPage },
+  props: {
+    folder: { type: Object || null }
+  },
 }
 </script>

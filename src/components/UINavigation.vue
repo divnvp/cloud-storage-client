@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer permanent>
+  <v-navigation-drawer app permanent>
     <v-list
       dense
       nav
@@ -16,21 +16,27 @@
 
       <UIFolderDialog @create="createFolder" />
 
-      <v-list-item
-        v-for="folder in user.folders"
-        :key="folder.id"
-        @click="$vuetify.goTo"
+      <v-list-item-group
+        v-model="selectedFolder"
+        active-class="deep-purple--text text--accent-4"
       >
-        <v-list-item-icon>
-          <v-icon>mdi-folder</v-icon>
-        </v-list-item-icon>
+        <v-list-item
+          v-for="folder in user.folders"
+          :key="folder.id"
+          :value="folder"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>mdi-folder</v-icon>
+          </v-list-item-icon>
 
-        <v-list-item-content>
-          <v-list-item-title>
-            {{ folder.name }}
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ folder.name }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -45,9 +51,23 @@ export default {
     user: { type: Object, required: true },
   },
 
+  data:() => ({
+    selectedFolder: null,
+  }),
+
   computed: {
     fullName() {
       return `${this.user.firstName} ${this.user.lastName}`
+    }
+  },
+
+  watch: {
+    "selectedFolder": {
+      handler(newValue) {
+        if (newValue) {
+          this.$emit("select", newValue);
+        }
+      }
     }
   },
 
