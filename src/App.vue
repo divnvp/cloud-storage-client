@@ -21,7 +21,11 @@
       @close="closeAuth"
       @registration="isRegistration = true"
     />
-    <UIRegistration :show="isRegistration" @close="closeRegistration" />
+    <UIRegistration
+      :show="isRegistration"
+      @record="recordNewUser"
+      @close="closeRegistration"
+    />
   </v-app>
 </template>
 
@@ -64,6 +68,10 @@ export default {
       } catch (e) {
         //
       }
+    },
+
+    recordNewUser(newUser) {
+      this.users.push(newUser);
     },
 
     closeRegistration() {

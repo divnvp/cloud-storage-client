@@ -75,10 +75,10 @@ export default {
 
   computed: {
     isUserExists() {
-      return this.users.find(u =>
+      return Object.keys(this.users.find(u =>
         u.username === this.user.username &&
           u.password === this.user.password
-      );
+      )).length;
     }
   },
 
@@ -89,7 +89,7 @@ export default {
       if (!(this.user.username && this.user.password)) return;
 
       try {
-        if (Object.keys(this.isUserExists).length) {
+        if (this.isUserExists) {
           await auth(this.user);
           this.$emit("close");
         } else {

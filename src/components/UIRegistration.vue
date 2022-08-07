@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import { record } from "../../mocks/registration.mock";
+
 export default {
   name: "UIRegistration",
 
@@ -97,13 +99,16 @@ export default {
   },
 
   methods: {
-    record() {
+    async record() {
       this.loading = true;
       this.error = false;
       if (!(this.isUserFieldsExist)) return;
 
       try {
-        //
+        await record(this.user);
+        this.$emit("record", this.user);
+
+        this.close();
       } catch (e) {
         //
       }
