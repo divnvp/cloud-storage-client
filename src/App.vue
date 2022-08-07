@@ -7,7 +7,7 @@
 
       <v-spacer />
 
-      <UILogout />
+      <UILogout @logout="logout" />
     </v-app-bar>
 
     <v-main>
@@ -23,6 +23,7 @@
     />
     <UIRegistration
       :show="isRegistration"
+      :users="users"
       @record="recordNewUser"
       @close="closeRegistration"
     />
@@ -52,26 +53,45 @@ export default {
 
   data: () => ({
     isRegistration: false,
-    isAuth: true,
+    isAuth: !JSON.parse(localStorage.getItem("currentUser")),
 
-    users: []
+    users: [],
   }),
 
-  mounted() {
+  computed: {
+    isUsersExist() {
+      return JSON.parse(localStorage.getItem("users"));
+    }
+  },
+
+  created() {
     this.getUsers();
   },
 
   methods: {
     async getUsers() {
       try {
-        this.users = await fetchUsers();
+        if (this.isUsersExist) {
+          this.users = JSON.parse(localStorage.getItem("users"));
+        } else {
+          this.users = await fetchUsers();
+          localStorage.setItem("users", JSON.stringify(this.users));
+        }
       } catch (e) {
         //
       }
     },
 
     recordNewUser(newUser) {
+      newUser.userId = this.users[this.users.length - 1].userId + 1;
       this.users.push(newUser);
+      localStorage.setItem("users", JSON.stringify(this.users));
+      localStorage.removeItem("currentUser");
+    },
+
+    logout() {
+      localStorage.removeItem("currentUser");
+      this.isAuth = true;
     },
 
     closeRegistration() {
@@ -79,7 +99,10 @@ export default {
       this.isAuth = true;
     },
 
-    closeAuth() {
+    closeAuth(currentUser) {
+      if (currentUser) {
+        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+      }
       this.isAuth = false;
     }
   }

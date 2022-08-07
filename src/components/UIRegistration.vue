@@ -3,13 +3,18 @@
     <v-card :loading="loading">
       <v-card-title>
         Регистрация
-
         <v-spacer />
 
-        <v-btn text style="font-size: 18px" @click="close">
+        <v-btn text style="font-size: 18px" color="primary" @click="close">
           x
         </v-btn>
       </v-card-title>
+
+      <UIAlert
+        :show="alert.show"
+        :message="alert.message"
+        :type="alert.type"
+      />
 
       <v-card-text>
         <v-form @submit.prevent="record" v-model="valid">
@@ -17,7 +22,7 @@
             v-model="user.username"
             color="primary"
             :rules="formRules"
-            label="Имя пользователя"
+            label="Логин"
           />
 
           <v-text-field
@@ -67,13 +72,17 @@
 </template>
 
 <script>
+//Components
+import UIAlert from "./UIAlert";
+
 import { record } from "../../mocks/registration.mock";
 
 export default {
   name: "UIRegistration",
-
+  components: { UIAlert },
   props: {
-    show: { type: Boolean, required: true }
+    show: { type: Boolean, required: true },
+    users: { type: Array, required: true }
   },
 
   data:() => ({
@@ -87,6 +96,11 @@ export default {
       firstName: "",
       lastName: ""
     },
+    alert: {
+      show: false,
+      message: "",
+      type: ""
+    },
 
     formRules: [v => !!v || "Это обязательное пое"],
   }),
@@ -95,6 +109,12 @@ export default {
     isUserFieldsExist() {
       return this.user.username && this.user.password &&
         this.user.firstName && this.user.lastName;
+    },
+
+    isUserExists() {
+      return this.users.find(u =>
+        u.username === this.user.username
+      );
     }
   },
 
@@ -102,7 +122,16 @@ export default {
     async record() {
       this.loading = true;
       this.error = false;
+
       if (!(this.isUserFieldsExist)) return;
+
+      if(this.isUserExists) {
+        this.showAlert({
+          message: "Пользователь с таким логином уже существует",
+          type: "error"
+        });
+        return;
+      }
 
       try {
         await record(this.user);
@@ -112,6 +141,12 @@ export default {
       } catch (e) {
         //
       }
+    },
+
+    showAlert(params) {
+      this.alert.show = true;
+      this.alert.message = params.message;
+      this.alert.type = params.type;
     },
 
     close() {

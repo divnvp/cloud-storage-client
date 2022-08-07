@@ -11,7 +11,7 @@
             v-model="user.username"
             color="primary"
             :rules="formRules"
-            label="Имя пользователя"
+            label="Логин"
           />
 
           <v-text-field
@@ -27,7 +27,13 @@
           </v-alert>
 
           <v-row fluid>
-            <v-btn text color="primary" type="submit" :disabled="!valid">
+            <v-btn
+              text
+              color="primary"
+              type="submit"
+              :disabled="!valid"
+              @click="auth"
+            >
               Войти в хранилище
             </v-btn>
 
@@ -36,7 +42,6 @@
             <v-btn
               text
               color="primary"
-              type="submit"
               :disabled="!valid"
               @click="showRegistration"
             >
@@ -91,7 +96,7 @@ export default {
       try {
         if (this.isUserExists) {
           await auth(this.user);
-          this.$emit("close");
+          this.$emit("close", this.user);
         } else {
           throw Error;
         }
