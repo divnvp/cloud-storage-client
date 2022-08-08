@@ -49,8 +49,7 @@ import UINavigation from "./components/UINavigation";
 import UIFolder from "./components/UIFolder";
 
 import { fetchUsers } from "../mocks/users.mock";
-import {createFolder} from "../mocks/folders.mock";
-import {createFile} from "../mocks/files.mock";
+import { createFile } from "../mocks/files.mock";
 
 export default {
   name: 'App',
