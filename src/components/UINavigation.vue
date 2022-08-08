@@ -4,7 +4,7 @@
       dense
       nav
     >
-      <v-list-item>
+      <v-list-item two-line>
         <v-list-item-content>
           <v-list-item-title>
             {{ fullName }}
@@ -25,6 +25,7 @@
           :key="folder.id"
           :value="folder"
           link
+          two-line
         >
           <v-list-item-icon>
             <v-icon>mdi-folder</v-icon>
@@ -34,6 +35,10 @@
             <v-list-item-title>
               {{ folder.name }}
             </v-list-item-title>
+
+            <v-list-item-subtitle>
+              {{ folder.size || 0 }} B
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list-item-group>
@@ -48,7 +53,7 @@ export default {
   name: "UINavigation",
   components: { UIFolderDialog },
   props: {
-    user: { type: Object, required: true },
+    user: { type: Object || null, required: true },
   },
 
   data:() => ({

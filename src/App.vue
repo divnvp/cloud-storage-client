@@ -17,7 +17,11 @@
     />
 
     <v-main>
-      <UIFolder v-if="selectedFolder" :folder="selectedFolder" />
+      <UIFolder
+        v-if="selectedFolder"
+        :folder="selectedFolder"
+        @create="createFile"
+      />
     </v-main>
 
     <UIAuth
@@ -92,6 +96,7 @@ export default {
     recordNewUser(newUser) {
       newUser.userId = this.users[this.users.length - 1].userId + 1;
       this.users.push(newUser);
+
       localStorage.setItem("users", JSON.stringify(this.users));
       localStorage.removeItem("currentUser");
     },
@@ -102,6 +107,20 @@ export default {
 
       localStorage.setItem("users", JSON.stringify(this.users));
       localStorage.setItem("currentUser", JSON.stringify(this.users[index]));
+    },
+
+    createFile(newFile) {
+      this.selectedFolder.files.push({
+        id: this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1,
+        name: newFile.name,
+        size: newFile.size,
+        endDate: null
+      });
+      const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
+      this.users[index] = this.currentUser;
+
+      localStorage.setItem("users", JSON.stringify(this.users));
+      localStorage.setItem("currentUser", JSON.stringify(this.currentUser));
     },
 
     selectFolder(folder) {
