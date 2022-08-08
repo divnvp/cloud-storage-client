@@ -21,7 +21,9 @@
           :value="f.name.split('.')[0]"
           outlined
           prepend-icon="mdi-file"
+          append-icon="mdi-delete"
           append-outer-icon="mdi-content-save"
+          @click:append="deleteFile(f.id)"
           @click:append-outer="saveFile"
         />
       </v-row>
@@ -49,6 +51,11 @@ export default {
 
     createFile() {
       this.$emit("create", this.newFile);
+      this.newFile = null;
+    },
+
+    deleteFile(fileId) {
+      this.$emit("delete", fileId);
     }
   }
 }

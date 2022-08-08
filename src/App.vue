@@ -21,6 +21,7 @@
         v-if="selectedFolder"
         :folder="selectedFolder"
         @create="createFile"
+        @delete="deleteFile"
       />
     </v-main>
 
@@ -105,8 +106,7 @@ export default {
       const index = this.users.findIndex(u => u.userId === user.userId);
       this.users[index] = user;
 
-      localStorage.setItem("users", JSON.stringify(this.users));
-      localStorage.setItem("currentUser", JSON.stringify(this.users[index]));
+      this.updateLocalStorage(this.users[index]);
     },
 
     createFile(newFile) {
@@ -119,12 +119,23 @@ export default {
       const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
       this.users[index] = this.currentUser;
 
-      localStorage.setItem("users", JSON.stringify(this.users));
-      localStorage.setItem("currentUser", JSON.stringify(this.currentUser));
+      this.updateLocalStorage();
+    },
+
+    deleteFile(fileId) {
+      const index = this.selectedFolder.files.findIndex(f => f.id === fileId);
+      this.selectedFolder.files.splice(index, 1);
+
+      this.updateLocalStorage();
     },
 
     selectFolder(folder) {
       this.selectedFolder = folder;
+    },
+
+    updateLocalStorage(currentUser) {
+      localStorage.setItem("users", JSON.stringify(this.users));
+      localStorage.setItem("currentUser", JSON.stringify(currentUser || this.currentUser));
     },
 
     logout() {

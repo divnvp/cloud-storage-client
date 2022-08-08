@@ -57,6 +57,7 @@
 
 <script>
 import UIFolderDialog from "./UIFolderDialog";
+import {createFolder} from "../../mocks/folders.mock";
 
 export default {
   name: "UINavigation",
@@ -93,20 +94,27 @@ export default {
   },
 
   methods: {
-    createFolder(name) {
+    async createFolder(name) {
       this.isAlert = false;
 
-      if (Object.keys(this.user.folders.find(f => f.name === name)).length) {
+      if (!!this.user.folders.length && this.user.folders.find(f => f.name === name)) {
         this.isAlert = true;
         return;
       }
 
-      this.user.folders.push({
+      const folder = {
         name,
         id: this.user.folders[this.user.folders.length - 1].id + 1
-      });
+      }
 
-      this.$emit("create", this.user);
+      try {
+        await createFolder(folder);
+
+        this.user.folders.push(folder);
+        this.$emit("create", this.user);
+      } catch (e) {
+        //
+      }
     }
   }
 }
