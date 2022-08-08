@@ -10,12 +10,16 @@
           <v-list-item-title>
             {{ fullName }}
           </v-list-item-title>
+
+          <v-list-item-subtitle>
+            {{ fullSize || 0 }} B
+          </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
       <v-divider />
 
-      <UIFolderDialog @create="createFolder" />
+      <UIFolderDialog @create="createFolder" :isAlert="isAlert" />
 
       <v-list-item-group
         v-model="selectedFolder"
@@ -63,11 +67,18 @@ export default {
 
   data:() => ({
     selectedFolder: null,
+
+    isAlert: false
   }),
 
   computed: {
     fullName() {
       return `${this.user.firstName} ${this.user.lastName}`
+    },
+
+    fullSize() {
+      const currentFiles = this.user.folders.map(fld => fld.files)[0];
+      return currentFiles.map(a => a.size).reduce((a, b) => a + b, 0);
     }
   },
 
@@ -83,6 +94,13 @@ export default {
 
   methods: {
     createFolder(name) {
+      this.isAlert = false;
+
+      if (Object.keys(this.user.folders.find(f => f.name === name)).length) {
+        this.isAlert = true;
+        return;
+      }
+
       this.user.folders.push({
         name,
         id: this.user.folders[this.user.folders.length - 1].id + 1

@@ -19,9 +19,13 @@
       <v-card-text>
         <v-text-field
           v-model="folderName"
+          autofocus
           color="primary"
           label="Имя папки"
+          @keydown.enter="createFolder"
         />
+
+        <UIAlert :show="isAlert" message="Папка уже существует" type="error"/>
       </v-card-text>
 
       <v-card-actions>
@@ -40,7 +44,6 @@
           color="primary"
           :disabled="!folderName"
           @click="createFolder"
-          @keydown.enter="createFolder"
         >
           Создать
         </v-btn>
@@ -50,8 +53,13 @@
 </template>
 
 <script>
+import UIAlert from "./UIAlert";
 export default {
   name: "UIFolderDialog",
+  components: { UIAlert },
+  props: {
+    isAlert: { type: Boolean, required: true }
+  },
 
   data:() => ({
     show: false,
@@ -63,6 +71,7 @@ export default {
   methods: {
     createFolder() {
       this.$emit("create", this.folderName);
+      this.folderName = "";
       this.close();
     },
 
