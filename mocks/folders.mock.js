@@ -1,4 +1,4 @@
-import {api} from "./api.mock";
+import { api } from "./api.mock";
 
 export async function createFolder(newFolder) {
   return await fetch(`${api.baseUrl}/cloud/folder/create`, {

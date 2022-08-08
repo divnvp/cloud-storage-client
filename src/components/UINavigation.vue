@@ -42,7 +42,7 @@
             </v-list-item-title>
 
             <v-list-item-subtitle>
-              {{ folder.size || 0 }} B
+              {{ getFolderSize(folder) || 0 }} B
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -56,8 +56,10 @@
 </template>
 
 <script>
+// Components
 import UIFolderDialog from "./UIFolderDialog";
-import {createFolder} from "../../mocks/folders.mock";
+
+import { createFolder } from "../../mocks/folders.mock";
 
 export default {
   name: "UINavigation",
@@ -114,6 +116,13 @@ export default {
         this.$emit("create", this.user);
       } catch (e) {
         //
+      }
+    },
+
+    getFolderSize(folder) {
+      if (folder.files) {
+        const sizes = folder.files.map(file => file.size);
+        return sizes.reduce((a, b) => a + b, 0);
       }
     }
   }

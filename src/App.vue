@@ -49,6 +49,8 @@ import UINavigation from "./components/UINavigation";
 import UIFolder from "./components/UIFolder";
 
 import { fetchUsers } from "../mocks/users.mock";
+import {createFolder} from "../mocks/folders.mock";
+import {createFile} from "../mocks/files.mock";
 
 export default {
   name: 'App',
@@ -109,17 +111,31 @@ export default {
       this.updateLocalStorage(this.users[index]);
     },
 
-    createFile(newFile) {
-      this.selectedFolder.files.push({
-        id: this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1,
+    async createFile(newFile) {
+      if (!this.selectedFolder.files) {
+        this.selectedFolder.files = [];
+      }
+
+      const file = {
+        id: this.selectedFolder.files.length ?
+            this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1 :
+            1,
         name: newFile.name,
         size: newFile.size,
         endDate: null
-      });
-      const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
-      this.users[index] = this.currentUser;
+      }
 
-      this.updateLocalStorage();
+      try {
+        await createFile(file);
+
+        this.selectedFolder.files.push(file);
+        const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
+        this.users[index] = this.currentUser;
+
+        this.updateLocalStorage();
+      } catch (e) {
+        //
+      }
     },
 
     deleteFile(fileId) {
