@@ -98,7 +98,8 @@ export default {
       username: "",
       password: "",
       firstName: "",
-      lastName: ""
+      lastName: "",
+      folders: []
     },
     alert: {
       show: false,

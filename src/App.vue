@@ -21,6 +21,7 @@
         v-if="selectedFolder"
         :folder="selectedFolder"
         @create="createFile"
+        @update="updateFileName"
         @delete="deleteFile"
       />
     </v-main>
@@ -137,6 +138,15 @@ export default {
       }
     },
 
+    updateFileName({ name, id }) {
+      const file = this.selectedFolder.files.find(f => f.id === id);
+      const fileType = file.name.split(".")[1];
+
+      file.name = `${name}.${fileType}`;
+
+      this.updateLocalStorage();
+    },
+
     deleteFile(fileId) {
       const index = this.selectedFolder.files.findIndex(f => f.id === fileId);
       this.selectedFolder.files.splice(index, 1);
@@ -158,6 +168,7 @@ export default {
       this.currentUser = null;
 
       this.isAuth = true;
+      this.selectedFolder = null;
     },
 
     closeRegistration() {

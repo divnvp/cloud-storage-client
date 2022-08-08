@@ -17,14 +17,11 @@
         v-for="f in folder.files"
         :key="f.id"
       >
-        <v-text-field
-          :value="f.name.split('.')[0]"
-          outlined
-          prepend-icon="mdi-file"
-          append-icon="mdi-delete"
-          append-outer-icon="mdi-content-save"
-          @click:append="deleteFile(f.id)"
-          @click:append-outer="saveFile"
+        <UIFolderName
+          :file-id="f.id"
+          :file-text="f.name.split('.')[0]"
+          @delete="deleteFile"
+          @update="updateFileName"
         />
       </v-row>
     </v-col>
@@ -33,25 +30,28 @@
 
 <script>
 import UIPage from "./UIPage";
+import UIFolderName from "./UIFolderName";
 export default {
   name: "UIFolder",
-  components: { UIPage },
+  components: { UIFolderName, UIPage },
   props: {
     folder: { type: Object || null }
   },
 
   data:() => ({
-    newFile: null
+    newFile: null,
+
+    fileName: ""
   }),
 
   methods: {
-    saveFile() {
-      //
-    },
-
     createFile() {
       this.$emit("create", this.newFile);
       this.newFile = null;
+    },
+
+    updateFileName(file) {
+      this.$emit("update", file);
     },
 
     deleteFile(fileId) {

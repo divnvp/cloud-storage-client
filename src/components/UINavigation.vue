@@ -65,7 +65,7 @@ export default {
   name: "UINavigation",
   components: { UIFolderDialog },
   props: {
-    user: { type: Object || null, required: true },
+    user: { type: Object || null },
   },
 
   data:() => ({
@@ -80,8 +80,13 @@ export default {
     },
 
     fullSize() {
-      const currentFiles = this.user.folders.map(fld => fld.files)[0];
-      return currentFiles.map(a => a.size).reduce((a, b) => a + b, 0);
+      if (this.user.folders.length) {
+        const currentFiles = this.user.folders.map(fld => fld.files)[0];
+        if (currentFiles) {
+          return currentFiles.map(a => a.size).reduce((a, b) => a + b, 0);
+        }
+      }
+     return 0;
     }
   },
 
@@ -106,14 +111,16 @@ export default {
 
       const folder = {
         name,
-        id: this.user.folders[this.user.folders.length - 1].id + 1
+        id: this.user.folders.length ?
+          this.user.folders[this.user.folders.length - 1].id + 1 :
+          1
       }
+
+      this.user.folders.push(folder);
+      this.$emit("create", this.user);
 
       try {
         await createFolder(folder);
-
-        this.user.folders.push(folder);
-        this.$emit("create", this.user);
       } catch (e) {
         //
       }
