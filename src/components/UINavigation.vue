@@ -1,6 +1,7 @@
 <template>
   <v-navigation-drawer app permanent>
     <v-list
+      v-if="user"
       dense
       nav
     >
@@ -43,6 +44,10 @@
         </v-list-item>
       </v-list-item-group>
     </v-list>
+
+    <span v-else>
+      Пользователь не найден
+    </span>
   </v-navigation-drawer>
 </template>
 

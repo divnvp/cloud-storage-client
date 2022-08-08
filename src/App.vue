@@ -129,6 +129,8 @@ export default {
 
     logout() {
       localStorage.removeItem("currentUser");
+      this.currentUser = null;
+
       this.isAuth = true;
     },
 
@@ -140,6 +142,7 @@ export default {
     closeAuth(currentUser) {
       if (currentUser) {
         localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        this.currentUser = currentUser;
       }
       this.isAuth = false;
     }
