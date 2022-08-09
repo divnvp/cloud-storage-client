@@ -24,7 +24,7 @@ export default {
       },
       set(value) {
         this.$emit("update", {
-          id: this.fileId,
+          id: this.file.id,
           name: value
         });
       }
@@ -38,7 +38,7 @@ export default {
     },
 
     deleteFile() {
-      this.$emit("delete", Event);
+      this.$emit("delete", this.file.id);
     }
   }
 }
