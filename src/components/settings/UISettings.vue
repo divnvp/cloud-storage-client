@@ -40,6 +40,8 @@
 // Components
 import UIDisplaying from "./UIDisplaying";
 
+import { getItem } from "../../factories/storage.factory";
+
 export default {
   name: "UISettings",
 
@@ -48,7 +50,7 @@ export default {
   data:() => ({
     show: false,
 
-    displaying: "table"
+    displaying: getItem("settings").displaying || "table"
   }),
 
   methods: {
