@@ -9,9 +9,40 @@
           counter
           outlined
           label="Загрузить файл"
-          append-outer-icon="mdi-send"
-          @click:append-outer="createFile"
         />
+
+        <v-menu
+          v-model="isMenuShow"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="endDate"
+              label="Когда удалить файл?"
+              readonly
+              outlined
+              clearable
+              :disabled="!newFile"
+              v-bind="attrs"
+              v-on="on"
+              class="mx-8 shrink"
+            />
+          </template>
+
+          <v-date-picker
+            v-model="endDate"
+            :active-picker.sync="activePicker"
+            :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
+            .toISOString().substring(0, 10)"
+          />
+        </v-menu>
+
+        <v-btn fab :disabled="!newFile" @click="createFile" class="ml-4">
+          <v-icon>mdi-send</v-icon>
+        </v-btn>
       </v-row>
 
       <UIAlert
@@ -20,7 +51,7 @@
         type="error"
       />
 
-      <v-row>
+      <v-row v-if="isFilesExist">
         <v-select
           v-model="fileType"
           :items="allTypes"
@@ -61,8 +92,11 @@ export default {
 
   data:() => ({
     isAlert: false,
+    isMenuShow: false,
 
     newFile: null,
+    activePicker: null,
+    endDate: null,
 
     fileType: "",
     fileName: "",
@@ -83,16 +117,29 @@ export default {
           this.filteredFolder = [];
         }
       }
+    },
+
+    endDate: {
+      handler(newValue) {
+        this.newFile.endDate = newValue;
+      }
     }
   },
 
   computed: {
-    allTypes() {
-      const typesSet = new Set();
-      const types = this.folder.files.map(file => file.name.split(".")[1]);
-      types.forEach(t => typesSet.add(t));
+    isFilesExist() {
+      return this.folder.files && this.folder.files.length;
+    },
 
-      return Array.from(typesSet);
+    allTypes() {
+      if (this.folder.files && this.folder.files.length) {
+        const typesSet = new Set();
+        const types = this.folder.files.map(file => file.name.split(".")[1]);
+        types.forEach(t => typesSet.add(t));
+
+        return Array.from(typesSet);
+      }
+      return [];
     }
   },
 

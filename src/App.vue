@@ -22,6 +22,7 @@
         :folder="selectedFolder"
         @create="createFile"
         @update="updateFileName"
+        @update-end="updateEndDate"
         @download="downloadFile"
         @delete="deleteFile"
       />
@@ -70,7 +71,11 @@ export default {
 
     users: [],
     currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
-    selectedFolder: null
+    selectedFolder: null,
+    time: new Date(),
+    file: null,
+
+    interval: -1
   }),
 
   computed: {
@@ -79,8 +84,33 @@ export default {
     }
   },
 
+  watch: {
+    time: {
+      handler() {
+        if (this.currentUser.folders && this.currentUser.folders.length) {
+          this.currentUser.folders.forEach(folder => {
+            if (folder.files && folder.files.length) {
+              folder.files.forEach(file => {
+                if (file.endDate) {
+                  if (new Date(this.time).getTime() > new Date(file.endDate).getTime()) {
+                    const index = folder.files.findIndex(f => f.id === file.id);
+                    folder.files.splice(index, 1);
+                  }
+                }
+              });
+            }
+          });
+        }
+      }
+    }
+  },
+
   created() {
     this.getUsers();
+  },
+
+  mounted() {
+    this.changeTime();
   },
 
   methods: {
@@ -113,24 +143,23 @@ export default {
     },
 
     async createFile(newFile) {
-      console.log(newFile);
       if (!this.selectedFolder.files) {
         this.selectedFolder.files = [];
       }
 
-      const file = {
+      this.file = {
         id: this.selectedFolder.files.length ?
             this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1 :
             1,
         name: newFile.name,
         size: newFile.size,
-        endDate: null
+        endDate: newFile.endDate
       }
 
       try {
-        await createFile(file);
+        await createFile(this.file);
 
-        this.selectedFolder.files.push(file);
+        this.selectedFolder.files.push(this.file);
         const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
         this.users[index] = this.currentUser;
 
@@ -151,6 +180,12 @@ export default {
       file.name = `${name}.${fileType}`;
 
       this.updateLocalStorage();
+    },
+
+    updateEndDate() {
+      // if (date) {
+      //   this.selectedFolder
+      // }
     },
 
     deleteFile(fileId) {
@@ -188,6 +223,13 @@ export default {
         this.currentUser = currentUser;
       }
       this.isAuth = false;
+    },
+
+    changeTime() {
+      this.interval = setInterval(
+        () => (this.time = new Date()),
+        1000
+      );
     }
   }
 };
