@@ -4,6 +4,7 @@
       <v-row>
         <v-file-input
           v-model="newFile"
+          :rules="rules"
           show-size
           counter
           outlined
@@ -13,13 +14,19 @@
         />
       </v-row>
 
+      <UIAlert
+        :show="isAlert"
+        message="Недопустимый файл"
+        type="error"
+      />
+
       <v-row
         v-for="f in folder.files"
         :key="f.id"
       >
         <UIFolderName
-          :file-id="f.id"
-          :file-text="f.name.split('.')[0]"
+          :file="f"
+          @download="downloadFile"
           @delete="deleteFile"
           @update="updateFileName"
         />
@@ -31,27 +38,46 @@
 <script>
 import UIPage from "./UIPage";
 import UIFolderName from "./UIFolderName";
+import UIAlert from "./UIAlert";
 export default {
   name: "UIFolder",
-  components: { UIFolderName, UIPage },
+  components: { UIAlert, UIFolderName, UIPage },
   props: {
     folder: { type: Object || null }
   },
 
   data:() => ({
+    isAlert: false,
+
     newFile: null,
 
-    fileName: ""
+    fileName: "",
+
+    rules: [
+      value => !value || value.size < 20000000 ||
+        'Максимальный размер одного файла 20Мб!'
+    ]
   }),
 
   methods: {
     createFile() {
+      this.isAlert = false;
+
+      if(this.newFile.name.includes(".php")) {
+        this.isAlert = true;
+        return;
+      }
+
       this.$emit("create", this.newFile);
       this.newFile = null;
     },
 
     updateFileName(file) {
       this.$emit("update", file);
+    },
+
+    downloadFile(/*fileId*/) {
+      // this.$emit("download", fileId);
     },
 
     deleteFile(fileId) {

@@ -1,11 +1,12 @@
 <template>
   <v-text-field
     v-model="fileName"
-    :value="fileText"
     outlined
     prepend-icon="mdi-file"
+    append-icon="mdi-download"
     append-outer-icon="mdi-delete"
-    @click:append-outer="deleteFile(fileId)"
+    @click:append-outer="deleteFile"
+    @click:append="downloadFile(this)"
   />
 </template>
 
@@ -13,14 +14,13 @@
 export default {
   name: "UIFolderName",
   props: {
-    fileText: { type: String, required: true },
-    fileId: { type: Number, required: true }
+    file: { type: Object, required: true }
   },
 
   computed: {
     fileName: {
       get() {
-        return this.fileText;
+        return this.file.name.split('.')[0];
       },
       set(value) {
         this.$emit("update", {
@@ -32,8 +32,13 @@ export default {
   },
 
   methods: {
-    deleteFile(fileId) {
-      this.$emit("delete", fileId);
+    downloadFile(input) {
+      // this.$emit("download", this.fileId);
+      console.log(input);
+    },
+
+    deleteFile() {
+      this.$emit("delete", Event);
     }
   }
 }

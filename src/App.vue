@@ -22,6 +22,7 @@
         :folder="selectedFolder"
         @create="createFile"
         @update="updateFileName"
+        @download="downloadFile"
         @delete="deleteFile"
       />
     </v-main>
@@ -112,6 +113,7 @@ export default {
     },
 
     async createFile(newFile) {
+      console.log(newFile);
       if (!this.selectedFolder.files) {
         this.selectedFolder.files = [];
       }
@@ -136,6 +138,10 @@ export default {
       } catch (e) {
         //
       }
+    },
+
+    downloadFile(fileId) {
+      console.log(fileId);
     },
 
     updateFileName({ name, id }) {
