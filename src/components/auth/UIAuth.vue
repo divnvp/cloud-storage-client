@@ -55,7 +55,7 @@
 </template>
 
 <script defer>
-import { auth } from "../../mocks/auth.mock";
+import { auth } from "../../../mocks/auth.mock";
 
 export default {
   name: "UIAuth",

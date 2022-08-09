@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import { logout } from "../../mocks/auth.mock";
+import { logout } from "../../../mocks/auth.mock";
+import { makeRequest } from "../../factories/web.factory";
 
 export default {
   name: "UILogout",
@@ -38,13 +39,10 @@ export default {
 
   methods: {
     async logout() {
-      try {
-        await logout();
-        this.show = false;
-        this.$emit("logout");
-      } catch (e) {
-        //
-      }
+      await makeRequest(logout());
+
+      this.show = false;
+      this.$emit("logout");
     }
   }
 }

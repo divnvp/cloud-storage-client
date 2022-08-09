@@ -79,8 +79,6 @@
 //Components
 import UIAlert from "./UIAlert";
 
-import { record } from "../../mocks/registration.mock";
-
 export default {
   name: "UIRegistration",
   components: { UIAlert },
@@ -138,14 +136,8 @@ export default {
         return;
       }
 
-      try {
-        await record(this.user);
-        this.$emit("record", this.user);
-
-        this.close();
-      } catch (e) {
-        //
-      }
+      this.$emit("record", this.user);
+      this.close();
     },
 
     showAlert(params) {

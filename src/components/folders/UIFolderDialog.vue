@@ -53,7 +53,7 @@
 </template>
 
 <script>
-import UIAlert from "./UIAlert";
+import UIAlert from "../UIAlert";
 export default {
   name: "UIFolderDialog",
   components: { UIAlert },

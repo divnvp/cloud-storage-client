@@ -79,13 +79,15 @@
 
 <script>
 // Components
-import UIPage from "./UIPage";
+import UIPage from "../UIPage";
 import UIFolderName from "./UIFolderName";
-import UIAlert from "./UIAlert";
+import UIAlert from "../UIAlert";
 
 export default {
   name: "UIFolder",
+
   components: { UIAlert, UIFolderName, UIPage },
+
   props: {
     folder: { type: Object || null }
   },
@@ -94,12 +96,12 @@ export default {
     isAlert: false,
     isMenuShow: false,
 
+    fileType: "",
+    fileName: "",
+
     newFile: null,
     activePicker: null,
     endDate: null,
-
-    fileType: "",
-    fileName: "",
 
     rules: [
       value => !value || value.size < 20000000 ||

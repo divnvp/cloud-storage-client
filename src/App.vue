@@ -22,7 +22,6 @@
         :folder="selectedFolder"
         @create="createFile"
         @update="updateFileName"
-        @download="downloadFile"
         @delete="deleteFile"
       />
     </v-main>
@@ -44,14 +43,19 @@
 
 <script>
 // Components
-import UILogout from "./components/UILogout.vue";
-import UIAuth from "./components/UIAuth";
+import UILogout from "./components/auth/UILogout.vue";
+import UIAuth from "./components/auth/UIAuth";
 import UIRegistration from "./components/UIRegistration";
 import UINavigation from "./components/UINavigation";
-import UIFolder from "./components/UIFolder";
+import UIFolder from "./components/folders/UIFolder";
 
 import { fetchUsers } from "../mocks/users.mock";
 import { createFile } from "../mocks/files.mock";
+import { compareTwoDates } from "./factories/dates.factory";
+import { getItem, removeItem, setItem } from "./factories/storage.factory";
+import { makeRequest } from "./factories/web.factory";
+import { createFolder } from "../mocks/folders.mock";
+import { record } from "../mocks/registration.mock";
 
 export default {
   name: 'App',
@@ -66,10 +70,10 @@ export default {
 
   data: () => ({
     isRegistration: false,
-    isAuth: !JSON.parse(localStorage.getItem("currentUser")),
+    isAuth: !getItem("currentUser"),
 
     users: [],
-    currentUser: JSON.parse(localStorage.getItem("currentUser")) || null,
+    currentUser: getItem("currentUser") || null,
     selectedFolder: null,
     time: new Date(),
     file: null,
@@ -79,19 +83,23 @@ export default {
 
   computed: {
     isUsersExist() {
-      return JSON.parse(localStorage.getItem("users"));
+      return getItem("users");
+    },
+
+    hasCurrentUserFolders() {
+      return this.currentUser && this.currentUser.folders && this.currentUser.folders.length;
     }
   },
 
   watch: {
     time: {
       handler() {
-        if (this.currentUser && this.currentUser.folders && this.currentUser.folders.length) {
+        if (this.hasCurrentUserFolders) {
           this.currentUser.folders.forEach(folder => {
             if (folder.files && folder.files.length) {
               folder.files.forEach(file => {
                 if (file.endDate) {
-                  if (new Date(this.time).getTime() > new Date(file.endDate).getTime()) {
+                  if (compareTwoDates(this.time, file.endDate)) {
                     const index = folder.files.findIndex(f => f.id === file.id);
                     folder.files.splice(index, 1);
 
@@ -116,15 +124,11 @@ export default {
 
   methods: {
     async getUsers() {
-      try {
-        if (this.isUsersExist) {
-          this.users = JSON.parse(localStorage.getItem("users"));
-        } else {
-          this.users = await fetchUsers();
-          localStorage.setItem("users", JSON.stringify(this.users));
-        }
-      } catch (e) {
-        //
+      if (this.isUsersExist) {
+        this.users = getItem("users");
+      } else {
+        this.users = await makeRequest(fetchUsers());
+        setItem("users", this.users);
       }
     },
 
@@ -132,47 +136,45 @@ export default {
       newUser.userId = this.users[this.users.length - 1].userId + 1;
       this.users.push(newUser);
 
-      localStorage.setItem("users", JSON.stringify(this.users));
-      localStorage.removeItem("currentUser");
+      setItem("users", this.users);
+      removeItem("currentUser");
+
+      makeRequest(record(newUser));
     },
 
-    createFolder(user) {
+    async createFolder(user) {
       const index = this.users.findIndex(u => u.userId === user.userId);
       this.users[index] = user;
 
       this.updateLocalStorage(this.users[index]);
+
+      await makeRequest(createFolder(user.folder));
     },
 
     async createFile(newFile) {
+      const { name, size, type, endDate } = newFile;
+
       if (!this.selectedFolder.files) {
         this.selectedFolder.files = [];
       }
 
       this.file = {
         id: this.selectedFolder.files.length ?
-            this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1 :
-            1,
-        endDate: newFile.endDate,
-        name: newFile.name,
-        size: newFile.size,
-        type: newFile.type
+          this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1 :
+          1,
+        name,
+        size,
+        type,
+        endDate
       }
 
-      try {
-        await createFile(this.file);
+      this.selectedFolder.files.push(this.file);
+      const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
+      this.users[index] = this.currentUser;
 
-        this.selectedFolder.files.push(this.file);
-        const index = this.users.findIndex(u => u.userId === this.currentUser.userId);
-        this.users[index] = this.currentUser;
+      this.updateLocalStorage();
 
-        this.updateLocalStorage();
-      } catch (e) {
-        //
-      }
-    },
-
-    downloadFile(fileId) {
-      console.log(fileId);
+      await makeRequest(createFile(this.file));
     },
 
     updateFileName({ name, id }) {
@@ -196,12 +198,12 @@ export default {
     },
 
     updateLocalStorage(currentUser) {
-      localStorage.setItem("users", JSON.stringify(this.users));
-      localStorage.setItem("currentUser", JSON.stringify(currentUser || this.currentUser));
+      setItem("users", this.users);
+      setItem("currentUser", currentUser || this.currentUser);
     },
 
     logout() {
-      localStorage.removeItem("currentUser");
+      removeItem("currentUser");
       this.currentUser = null;
 
       this.isAuth = true;
@@ -215,8 +217,9 @@ export default {
 
     closeAuth(currentUser) {
       if (currentUser) {
-        localStorage.setItem("currentUser", JSON.stringify(currentUser));
+        setItem("currentUser", currentUser);
         this.currentUser = currentUser;
+        location.reload();
       }
       this.isAuth = false;
     },
