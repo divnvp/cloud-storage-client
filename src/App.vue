@@ -22,7 +22,6 @@
         :folder="selectedFolder"
         @create="createFile"
         @update="updateFileName"
-        @update-end="updateEndDate"
         @download="downloadFile"
         @delete="deleteFile"
       />
@@ -87,7 +86,7 @@ export default {
   watch: {
     time: {
       handler() {
-        if (this.currentUser.folders && this.currentUser.folders.length) {
+        if (this.currentUser && this.currentUser.folders && this.currentUser.folders.length) {
           this.currentUser.folders.forEach(folder => {
             if (folder.files && folder.files.length) {
               folder.files.forEach(file => {
@@ -95,6 +94,8 @@ export default {
                   if (new Date(this.time).getTime() > new Date(file.endDate).getTime()) {
                     const index = folder.files.findIndex(f => f.id === file.id);
                     folder.files.splice(index, 1);
+
+                    this.updateLocalStorage();
                   }
                 }
               });
@@ -151,9 +152,10 @@ export default {
         id: this.selectedFolder.files.length ?
             this.selectedFolder.files[this.selectedFolder.files.length - 1].id + 1 :
             1,
+        endDate: newFile.endDate,
         name: newFile.name,
         size: newFile.size,
-        endDate: newFile.endDate
+        type: newFile.type
       }
 
       try {
@@ -180,12 +182,6 @@ export default {
       file.name = `${name}.${fileType}`;
 
       this.updateLocalStorage();
-    },
-
-    updateEndDate() {
-      // if (date) {
-      //   this.selectedFolder
-      // }
     },
 
     deleteFile(fileId) {

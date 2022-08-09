@@ -6,7 +6,7 @@
     append-icon="mdi-download"
     append-outer-icon="mdi-delete"
     @click:append-outer="deleteFile"
-    @click:append="downloadFile(this)"
+    @click:append="downloadFile"
   />
 </template>
 
@@ -32,9 +32,8 @@ export default {
   },
 
   methods: {
-    downloadFile(input) {
-      // this.$emit("download", this.fileId);
-      console.log(input);
+    downloadFile() {
+      this.$emit("download", this.file);
     },
 
     deleteFile() {
