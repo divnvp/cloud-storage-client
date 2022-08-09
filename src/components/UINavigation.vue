@@ -52,18 +52,25 @@
     <span v-else>
       Пользователь не найден
     </span>
+
+    <template #append>
+      <UISettings @save="getSettings" />
+    </template>
   </v-navigation-drawer>
 </template>
 
 <script>
 // Components
-import UIFolderDialog from "./UIFolderDialog";
+import UIFolderDialog from "./folders/UIFolderDialog";
+import UISettings from "./settings/UISettings";
 
-import { createFolder } from "../../mocks/folders.mock";
+import { setItem } from "../factories/storage.factory";
 
 export default {
   name: "UINavigation",
-  components: { UIFolderDialog },
+
+  components: { UISettings, UIFolderDialog },
+
   props: {
     user: { type: Object || null },
   },
@@ -91,7 +98,7 @@ export default {
   },
 
   watch: {
-    "selectedFolder": {
+    selectedFolder: {
       handler(newValue) {
         if (newValue) {
           this.$emit("select", newValue);
@@ -118,12 +125,6 @@ export default {
 
       this.user.folders.push(folder);
       this.$emit("create", this.user);
-
-      try {
-        await createFolder(folder);
-      } catch (e) {
-        //
-      }
     },
 
     getFolderSize(folder) {
@@ -131,6 +132,12 @@ export default {
         const sizes = folder.files.map(file => file.size);
         return sizes.reduce((a, b) => a + b, 0);
       }
+    },
+
+    getSettings(value) {
+      setItem("settings", {
+        displaying: value
+      });
     }
   }
 }
