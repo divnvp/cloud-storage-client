@@ -20,15 +20,6 @@
         type="error"
       />
 
-<!--      <v-select-->
-<!--        v-model="userModel.categoryId"-->
-<!--        :label="label"-->
-<!--        :items="getManagement(group) || categoryList"-->
-<!--        :rules="categoryRules"-->
-<!--        item-text="name"-->
-<!--        item-value="id"-->
-<!--        required-->
-<!--      />-->
       <v-row>
         <v-select
           v-model="fileType"
