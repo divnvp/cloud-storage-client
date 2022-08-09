@@ -51,14 +51,14 @@
         type="error"
       />
 
-      <v-row v-if="isFilesExist">
+      <v-row v-if="isFilesExist" class="mx-5">
+        <h4 class="mr-4">Фильтр: </h4>
         <v-select
           v-model="fileType"
           :items="allTypes"
           outlined
           clearable
           label="Тип файла"
-          class="mx-8"
         />
       </v-row>
 
