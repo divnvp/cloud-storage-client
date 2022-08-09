@@ -162,7 +162,7 @@ export default {
 
     downloadFile(file) {
       const text = "Тысяча извинений за то, что способ скачать файл с его собственным содержимым " +
-          "так и не удалось... Чтобы увидеть эту надпись, откройте скаченный файл через блокнот.";
+          "так и не нашёлся... Чтобы увидеть эту надпись, откройте скаченный файл через блокнот.";
       let a = document.createElement('a');
       a.setAttribute("href", `data:${file.type};charset=utf-8,` + text);
       a.setAttribute("download", file.name);
