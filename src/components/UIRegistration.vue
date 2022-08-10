@@ -97,7 +97,10 @@ export default {
       password: "",
       firstName: "",
       lastName: "",
-      folders: []
+      folders: [],
+      settings: {
+        displaying: "table"
+      }
     },
     alert: {
       show: false,

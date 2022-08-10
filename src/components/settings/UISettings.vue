@@ -18,7 +18,7 @@
       </v-card-title>
 
       <v-card-text>
-        <UIDisplaying v-model="displaying" />
+        <UIDisplaying v-model="user.settings.displaying" />
       </v-card-text>
 
       <v-card-actions>
@@ -40,22 +40,22 @@
 // Components
 import UIDisplaying from "./UIDisplaying";
 
-import { getItem } from "../../factories/storage.factory";
-
 export default {
   name: "UISettings",
 
   components: { UIDisplaying },
 
+  props: {
+    user: { type: Object || null },
+  },
+
   data:() => ({
     show: false,
-
-    displaying: getItem("settings").displaying || "table"
   }),
 
   methods: {
     saveSetting() {
-      this.$emit("save", this.displaying);
+      this.$emit("save", this.user.settings.displaying);
       this.show = false;
     }
   }

@@ -5,42 +5,40 @@
         <v-file-input
           v-model="newFile"
           :rules="rules"
+          label="Загрузить файл"
           show-size
           counter
           outlined
-          label="Загрузить файл"
         />
 
         <v-menu
           v-model="isMenuShow"
           :close-on-content-click="false"
           transition="scale-transition"
-          offset-y
           min-width="auto"
+          offset-y
         >
-          <template v-slot:activator="{ on, attrs }">
+          <template #activator="{ on, attrs }">
             <v-text-field
               v-model="endDate"
+              v-bind="attrs"
+              v-on="on"
               label="Когда удалить файл?"
+              :disabled="!newFile"
               readonly
               outlined
               clearable
-              :disabled="!newFile"
-              v-bind="attrs"
-              v-on="on"
               class="mx-8 shrink"
             />
           </template>
 
           <v-date-picker
             v-model="endDate"
-            :active-picker.sync="activePicker"
-            :min="(new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
-            .toISOString().substring(0, 10)"
+            :min="minDate"
           />
         </v-menu>
 
-        <v-btn fab :disabled="!newFile" @click="createFile" class="ml-4">
+        <v-btn :disabled="!newFile" @click="createFile" fab class="ml-4">
           <v-icon>mdi-send</v-icon>
         </v-btn>
       </v-row>
@@ -56,13 +54,13 @@
         <v-select
           v-model="fileType"
           :items="allTypes"
+          label="Тип файла"
           outlined
           clearable
-          label="Тип файла"
         />
       </v-row>
 
-      <v-card v-if="view === 'table' && isFilesExist" outlined>
+      <v-card v-if="userSettings.displaying === 'table' && isFilesExist" outlined>
         <v-card-text class="pt-10">
           <v-row
             v-for="f in filteredFolder.length ? filteredFolder : folder.files"
@@ -71,14 +69,14 @@
             <UIFolderName
               :file="f"
               @download="downloadFile"
-              @delete="deleteFile"
               @update="updateFileName"
+              @delete="deleteFile"
             />
           </v-row>
         </v-card-text>
       </v-card>
 
-      <v-card v-if="view === 'grid' && isFilesExist" outlined>
+      <v-card v-if="userSettings.displaying === 'grid' && isFilesExist" outlined>
         <v-card-text class="pt-10">
           <v-row dense>
             <v-col
@@ -91,8 +89,8 @@
                   <UIFolderName
                     :file="f"
                     @download="downloadFile"
-                    @delete="deleteFile"
                     @update="updateFileName"
+                    @delete="deleteFile"
                   />
                 </v-card-text>
               </v-card>
@@ -110,7 +108,7 @@ import UIPage from "../UIPage";
 import UIFolderName from "./UIFolderName";
 import UIAlert from "../UIAlert";
 
-import { getItem } from "../../factories/storage.factory";
+import { getFileExtension } from "../../factories/files.factory";
 
 export default {
   name: "UIFolder",
@@ -118,6 +116,7 @@ export default {
   components: { UIAlert, UIFolderName, UIPage },
 
   props: {
+    userSettings: { type: Object, required: true },
     folder: Object || null
   },
 
@@ -127,10 +126,8 @@ export default {
 
     fileType: "",
     fileName: "",
-    view: "",
 
     newFile: null,
-    activePicker: null,
     endDate: null,
 
     rules: [
@@ -148,12 +145,17 @@ export default {
     allTypes() {
       if (this.folder.files && this.folder.files.length) {
         const typesSet = new Set();
-        const types = this.folder.files.map(file => file.name.split(".")[1]);
+        const types = this.folder.files.map(file => getFileExtension(file.name));
         types.forEach(t => typesSet.add(t));
 
         return Array.from(typesSet);
       }
       return [];
+    },
+
+    minDate() {
+      return (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000))
+        .toISOString().substring(0, 10);
     }
   },
 
@@ -161,7 +163,9 @@ export default {
     fileType: {
       handler(newValue) {
         if (newValue) {
-          this.filteredFolder = this.folder.files.filter(f => f.name.split(".")[1] === newValue);
+          this.filteredFolder = this.folder.files.filter(
+            f => getFileExtension(f.name) === newValue
+          );
         } else {
           this.filteredFolder = [];
         }
@@ -175,15 +179,11 @@ export default {
     }
   },
 
-  created() {
-    this.view = getItem("settings").displaying;
-  },
-
   methods: {
     createFile() {
       this.isAlert = false;
 
-      if(this.newFile.name.includes(".php")) {
+      if(getFileExtension(this.newFile.name).includes("php")) {
         this.isAlert = true;
         return;
       }

@@ -54,7 +54,7 @@
     </span>
 
     <template #append>
-      <UISettings @save="getSettings" />
+      <UISettings :user="user" @save="getSettings" />
     </template>
   </v-navigation-drawer>
 </template>
@@ -63,8 +63,6 @@
 // Components
 import UIFolderDialog from "./folders/UIFolderDialog";
 import UISettings from "./settings/UISettings";
-
-import { setItem } from "../factories/storage.factory";
 
 export default {
   name: "UINavigation",
@@ -135,10 +133,7 @@ export default {
     },
 
     getSettings(value) {
-      setItem("settings", {
-        displaying: value
-      });
-      location.reload();
+      this.$emit("set-setting", value);
     }
   }
 }

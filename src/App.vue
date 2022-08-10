@@ -14,11 +14,13 @@
       :user="currentUser"
       @create="createFolder"
       @select="selectFolder"
+      @set-setting="setSettings"
     />
 
     <v-main>
       <UIFolder
         v-if="selectedFolder"
+        :user-settings="currentUser.settings"
         :folder="selectedFolder"
         @create="createFile"
         @update="updateFileName"
@@ -86,6 +88,10 @@ export default {
       return getItem("users");
     },
 
+    hasCurrentFolderFiles() {
+      return this.selectedFolder.files
+    },
+
     hasCurrentUserFolders() {
       return this.currentUser && this.currentUser.folders && this.currentUser.folders.length;
     }
@@ -114,12 +120,9 @@ export default {
     }
   },
 
-  created() {
-    this.getUsers();
-  },
-
   mounted() {
     this.changeTime();
+    this.getUsers();
   },
 
   methods: {
@@ -154,7 +157,7 @@ export default {
     async createFile(newFile) {
       const { name, size, type, endDate } = newFile;
 
-      if (!this.selectedFolder.files) {
+      if (!this.hasCurrentFolderFiles) {
         this.selectedFolder.files = [];
       }
 
@@ -200,6 +203,14 @@ export default {
     updateLocalStorage(currentUser) {
       setItem("users", this.users);
       setItem("currentUser", currentUser || this.currentUser);
+    },
+
+    setSettings(value) {
+      this.currentUser.settings.displaying = value;
+      const index = this.users.findIndex(u => u.id === this.currentUser.id);
+      this.users[index] = this.currentUser;
+
+      this.updateLocalStorage(this.users[index]);
     },
 
     logout() {
