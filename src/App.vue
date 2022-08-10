@@ -132,14 +132,14 @@ export default {
       }
     },
 
-    recordNewUser(newUser) {
+    async recordNewUser(newUser) {
       newUser.userId = this.users[this.users.length - 1].userId + 1;
       this.users.push(newUser);
 
       setItem("users", this.users);
       removeItem("currentUser");
 
-      makeRequest(record(newUser));
+      await makeRequest(record(newUser));
     },
 
     async createFolder(user) {

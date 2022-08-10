@@ -62,17 +62,44 @@
         />
       </v-row>
 
-      <v-row
-        v-for="f in filteredFolder.length ? filteredFolder : folder.files"
-        :key="f.id"
-      >
-        <UIFolderName
-          :file="f"
-          @download="downloadFile"
-          @delete="deleteFile"
-          @update="updateFileName"
-        />
-      </v-row>
+      <v-card v-if="view === 'table' && isFilesExist" outlined>
+        <v-card-text class="pt-10">
+          <v-row
+            v-for="f in filteredFolder.length ? filteredFolder : folder.files"
+            :key="f.id"
+          >
+            <UIFolderName
+              :file="f"
+              @download="downloadFile"
+              @delete="deleteFile"
+              @update="updateFileName"
+            />
+          </v-row>
+        </v-card-text>
+      </v-card>
+
+      <v-card v-if="view === 'grid' && isFilesExist" outlined>
+        <v-card-text class="pt-10">
+          <v-row dense>
+            <v-col
+              v-for="f in filteredFolder.length ? filteredFolder : folder.files"
+              :key="f.id"
+              cols="4"
+            >
+              <v-card outlined>
+                <v-card-text>
+                  <UIFolderName
+                    :file="f"
+                    @download="downloadFile"
+                    @delete="deleteFile"
+                    @update="updateFileName"
+                  />
+                </v-card-text>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
     </v-col>
   </UIPage>
 </template>
@@ -83,13 +110,15 @@ import UIPage from "../UIPage";
 import UIFolderName from "./UIFolderName";
 import UIAlert from "../UIAlert";
 
+import { getItem } from "../../factories/storage.factory";
+
 export default {
   name: "UIFolder",
 
   components: { UIAlert, UIFolderName, UIPage },
 
   props: {
-    folder: { type: Object || null }
+    folder: Object || null
   },
 
   data:() => ({
@@ -98,6 +127,7 @@ export default {
 
     fileType: "",
     fileName: "",
+    view: "",
 
     newFile: null,
     activePicker: null,
@@ -109,6 +139,23 @@ export default {
     ],
     filteredFolder: []
   }),
+
+  computed: {
+    isFilesExist() {
+      return this.folder.files && this.folder.files.length;
+    },
+
+    allTypes() {
+      if (this.folder.files && this.folder.files.length) {
+        const typesSet = new Set();
+        const types = this.folder.files.map(file => file.name.split(".")[1]);
+        types.forEach(t => typesSet.add(t));
+
+        return Array.from(typesSet);
+      }
+      return [];
+    }
+  },
 
   watch: {
     fileType: {
@@ -128,21 +175,8 @@ export default {
     }
   },
 
-  computed: {
-    isFilesExist() {
-      return this.folder.files && this.folder.files.length;
-    },
-
-    allTypes() {
-      if (this.folder.files && this.folder.files.length) {
-        const typesSet = new Set();
-        const types = this.folder.files.map(file => file.name.split(".")[1]);
-        types.forEach(t => typesSet.add(t));
-
-        return Array.from(typesSet);
-      }
-      return [];
-    }
+  created() {
+    this.view = getItem("settings").displaying;
   },
 
   methods: {

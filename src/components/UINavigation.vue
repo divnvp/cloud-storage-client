@@ -138,6 +138,7 @@ export default {
       setItem("settings", {
         displaying: value
       });
+      location.reload();
     }
   }
 }
