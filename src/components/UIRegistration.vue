@@ -63,7 +63,6 @@
               text
               color="primary"
               type="submit"
-              :disabled="!valid"
               large
             >
               Регистрация
