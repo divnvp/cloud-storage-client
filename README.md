@@ -1,5 +1,7 @@
 # Руководство пользователя
 
+Ссылка на приложение: https://divnvp.github.io/cloud-storage-client/
+
 ## Авторизация / регистрация
 
 ![Авторизация](./src/pictures/1.png)
