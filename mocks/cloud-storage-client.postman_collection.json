@@ -1,0 +1,500 @@
+{
+	"info": {
+		"_postman_id": "65886ad8-4827-4ff2-8e19-5976247244a4",
+		"name": "cloud-storage-client",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22652171"
+	},
+	"item": [
+		{
+			"name": "cloud/auth",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/cloud/auth?username={{username}}&password={{password}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cloud",
+						"auth"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "{{username}}"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/cloud/auth?username={{username}}&password={{password}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"auth"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{username}}"
+								},
+								{
+									"key": "password",
+									"value": "{{password}}"
+								}
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "cloud/registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/cloud/registration",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cloud",
+						"registration"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"u\",\r\n    \"password\": \"p\",\r\n    \"firstName\": \"fN\",\r\n    \"lastName\": \"lN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/cloud/registration",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"registration"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "cloud/file/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"name\": \"file1\",\r\n    \"size\": 100,\r\n    \"endDate\": null\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/cloud/file/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cloud",
+						"file",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "200",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"name\": \"file1\",\r\n    \"size\": 100,\r\n    \"endDate\": null\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/cloud/file/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"file",
+								"create"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "cloud/folder/create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": 0,\r\n    \"name\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/cloud/folder/create",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cloud",
+						"folder",
+						"create"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 0,\r\n    \"name\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/cloud/folder/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"folder",
+								"create"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "cloud/folders",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/cloud/folders",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cloud",
+						"folders"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/cloud/folders",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"folders"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		},
+		{
+			"name": "cloud/users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.variables.replaceIn('{{$randomInt}}');\r",
+							"pm.variables.replaceIn('{{$randomUserName}}');\r",
+							"pm.variables.replaceIn('{{$randomPassword}}');\r",
+							"pm.variables.replaceIn('{{$randomFirstName}}');\r",
+							"pm.variables.replaceIn('{{$randomLastName}}');\r",
+							"pm.variables.replaceIn('{{$randomFileName}}');\r",
+							"pm.variables.replaceIn('{{$randomDateFuture}}');\r",
+							"pm.variables.replaceIn('{{$randomFileType}}');\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/cloud/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"cloud",
+						"users"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/cloud/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"users"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": null,
+					"cookie": [],
+					"body": "[\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"{{$randomUserName}}\",\r\n        \"password\": \"{{$randomPassword}}\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    },\r\n    {\r\n        \"userId\": {{$randomInt}},\r\n        \"username\": \"admin\",\r\n        \"password\": \"admin\",\r\n        \"firstName\": \"{{$randomFirstName}}\",\r\n        \"lastName\": \"{{$randomLastName}}\",\r\n        \"folders\": [\r\n            {\r\n                \"id\": {{$randomInt}},\r\n                \"name\": \"{{$randomFileType}}\",\r\n                \"size\": 0,\r\n                \"files\": [\r\n                    {\r\n                        \"id\": {{$randomInt}},\r\n                        \"name\": \"{{$randomFileName}}\",\r\n                        \"size\": 0,\r\n                        \"endDate\": \"{{$randomDateFuture}}\"\r\n                    }\r\n                ]\r\n            }\r\n        ],\r\n        \"settings\": {\r\n            \"displaying\": \"table\"\r\n        }\r\n    }\r\n]"
+				}
+			]
+		},
+		{
+			"name": "cloud/logout",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{url}}/optionally",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"optionally"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Default",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/cloud/logout",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"cloud",
+								"logout"
+							]
+						}
+					},
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": ""
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "username",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "admin",
+			"type": "string"
+		},
+		{
+			"key": "url",
+			"value": "https://4d8ff579-6bac-4a8c-99bf-392930f838e2.mock.pstmn.io",
+			"type": "string"
+		}
+	]
+}
