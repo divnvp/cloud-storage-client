@@ -42,7 +42,6 @@
             <v-btn
               text
               color="primary"
-              :disabled="!valid"
               @click="showRegistration"
             >
               Регистрация
